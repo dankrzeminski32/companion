@@ -21,7 +21,7 @@ class HttpResponse(object):
             response += self.CRLF
         response += self.CRLF
         response += self._build_response_body()
-        return bytes(response, encoding="utf-8")
+        return bytes(response, encoding="ascii")
     
     def _build_response_line(self) -> str:
         return " ".join([self.version, str(self.status_code), self.status_code_message])

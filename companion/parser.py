@@ -10,7 +10,7 @@ class HttpParser(object):
         self.raw_data = data
     
     def parse(self) -> HttpRequest:
-        decoded_string = self.raw_data.decode("utf-8")
+        decoded_string = self.raw_data.decode("ascii")
         lines = decoded_string.split(self.CRLF)
         request_line: HttpRequestLine = self._parse_request_line(lines[0])
         headers = self._parse_headers(lines[1:])

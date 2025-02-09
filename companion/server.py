@@ -33,15 +33,16 @@ def read_http_request(connection):
         data += connection.recv(CHUNK_SIZE)
         if not data:
             break
-        if data.decode("utf-8")[-4:] == END_HTTP_REQUEST:
+        if data.decode("ascii")[-4:] == END_HTTP_REQUEST:
             found_end = True
     return data
 
 
 def handle_read(connection):
-    logger.info("handling read connection")
+    logger.info("Handling read connection")
     http_request_bytes = read_http_request(connection)
     http_request = HttpParser(http_request_bytes).parse()
+    logger.info(f"Request {http_request}")
     http_response = request_handler.handle(http_request)
     messages[connection].put_nowait(http_response.bytes)
 
