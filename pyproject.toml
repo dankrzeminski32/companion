@@ -1,4 +1,4 @@
-[project]
+[tool.poetry]
 name = "companion"
 license = { file = "LICENSE" }
 readme = "README.md"
@@ -9,14 +9,10 @@ authors = [
 requires-python = ">=3.11"
 dependencies = [
 ]
-dynamic = ["version"]
-
-[project.urls]
-repository = "https://github.com/dankrzeminski32/companion"
-
-[tool.poetry]
 version = "0.0.0"
 
+[tool.poetry.urls]
+repository = "https://github.com/dankrzeminski32/companion"
 [tool.poetry.scripts]
 companion = "companion.server:cli"
 
