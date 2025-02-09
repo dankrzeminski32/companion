@@ -1,5 +1,5 @@
 [project]
-name = "companion"
+name = "companion-server"
 license = { file = "LICENSE" }
 readme = "README.md"
 description = "a basic http 1.0 server implemented in python"
@@ -18,7 +18,7 @@ repository = "https://github.com/dankrzeminski32/companion"
 version = "0.0.0"
 
 [project.scripts]
-companion = "companion.server:cli"
+companion-server = "companion.server:cli"
 
 
 [tool.poetry-dynamic-versioning]
