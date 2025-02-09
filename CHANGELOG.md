@@ -1,12 +1,18 @@
 # CHANGELOG
 
 
+## v1.1.1 (2025-02-09)
+
+
 ## v1.1.0 (2025-02-09)
 
 ### Bug Fixes
 
 - Try out semantic release bot
   ([`cf282c3`](https://github.com/dankrzeminski32/companion/commit/cf282c3deb426cb96ba0982c355928b4c559290f))
+
+- Unify semantic release and publish
+  ([`aa9a219`](https://github.com/dankrzeminski32/companion/commit/aa9a219c3d973f591331594964029adca3bdf5c1))
 
 ### Features
 
