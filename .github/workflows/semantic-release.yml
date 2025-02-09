@@ -37,9 +37,25 @@ jobs:
           git_committer_name: "github-actions"
           git_committer_email: "actions@users.noreply.github.com"
 
-      - name: Publish | Upload package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        if: steps.release.outputs.released == 'true'
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'
+  
+      - name: Install poetry
+        run: |
+          pip install pipx
+          pipx install poetry
+          pipx inject poetry "poetry-dynamic-versioning[plugin]"
+  
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Publish package to PyPI
+        run: |
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry publish --build
 
       - name: Publish | Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v9.18.1
