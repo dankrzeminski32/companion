@@ -1,4 +1,5 @@
 from companion.request import HttpRequest, HttpRequestLine
+from companion.enums import HttpMethod
 
 
 class HttpParser(object):
@@ -17,7 +18,7 @@ class HttpParser(object):
     
     def _parse_request_line(self, request_line: str) -> HttpRequestLine:
         components = request_line.split()
-        method = components[0]
+        method = HttpMethod[components[0]]
         uri = components[1]
         version = components[2]
         return HttpRequestLine(method, uri, version)
