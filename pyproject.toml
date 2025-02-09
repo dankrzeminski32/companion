@@ -15,8 +15,8 @@ dynamic = ["version"]
 repository = "https://github.com/dankrzeminski32/companion"
 
 [tool.poetry]
-version = "0.0.0"
 packages = [{include = "companion"}]
+version = "0.0.0"
 
 [project.scripts]
 companion-server = "companion.server:cli"
