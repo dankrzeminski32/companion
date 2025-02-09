@@ -15,6 +15,7 @@ dynamic = ["version"]
 repository = "https://github.com/dankrzeminski32/companion"
 
 [tool.poetry]
+packages = [{include = "companion"}]
 version = "0.0.0"
 
 [project.scripts]
