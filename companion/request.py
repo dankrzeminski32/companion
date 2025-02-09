@@ -8,7 +8,7 @@ class HttpRequestLine(object):
         self.version = version
 
     def __str__(self):
-        return f"HttpRequestLine(method={self.method}, uri={self.uri}, version={self.version})"
+        return f"HttpRequestLine(method={self.method}, target={self.target}, version={self.version})"
 
 
 class HttpRequest(object):

@@ -5,6 +5,7 @@ from collections import defaultdict
 import logging
 from companion.handler import HttpRequestHandler
 from companion.parser import HttpParser
+import sys
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -92,3 +93,7 @@ def run_forever():
     except Exception as exc:
         logger.exception(exc)
         server_socket.close()
+
+
+def cli():
+    run_forever()
