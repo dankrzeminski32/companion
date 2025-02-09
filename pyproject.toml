@@ -1,31 +1,34 @@
-[build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
-build-backend = "poetry_dynamic_versioning.backend"
-
-[tool.poetry]
+[project]
 name = "companion"
-license = "MIT"
+license = { file = "LICENSE" }
 readme = "README.md"
 description = "a basic http 1.0 server implemented in python"
-authors = ["Dan Krzeminski"]
-version = "0.0.0"
-packages = [
-    { include = "companion"},
+authors = [
+    {name = "dankrzeminski32",email = "dankrzeminski32@gmail.com"}
 ]
+requires-python = ">=3.11"
+dependencies = [
+]
+dynamic = ["version"]
 
-[tool.poetry.urls]
+[project.urls]
 repository = "https://github.com/dankrzeminski32/companion"
 
-[tool.poetry.scripts]
+[tool.poetry]
+version = "0.0.0"
+
+[project.scripts]
 companion = "companion.server:cli"
+
 
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
 style = "semver"
 
-[tool.poetry.dependencies]
-python = ">=3.11"
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"
