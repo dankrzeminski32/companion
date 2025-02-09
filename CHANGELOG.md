@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v1.1.2 (2025-02-09)
+
+
 ## v1.1.1 (2025-02-09)
+
+### Bug Fixes
+
+- Small ci adjustments
+  ([`23c9a7d`](https://github.com/dankrzeminski32/companion/commit/23c9a7d30ae49798b5e01ff3e055dac3d5178c83))
 
 
 ## v1.1.0 (2025-02-09)
