@@ -25,6 +25,7 @@ companion = "companion.server:cli"
 enable = true
 vcs = "git"
 style = "semver"
+metadata = false
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
