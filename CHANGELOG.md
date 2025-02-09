@@ -1,7 +1,20 @@
 # CHANGELOG
 
 
+## v1.1.3 (2025-02-09)
+
+### Bug Fixes
+
+- Target release branch pypi upload
+  ([`de48f9a`](https://github.com/dankrzeminski32/companion/commit/de48f9a85b978ae2d183947e110ed922be260ed6))
+
+
 ## v1.1.2 (2025-02-09)
+
+### Bug Fixes
+
+- Next attempt at semantic release
+  ([`fe046cf`](https://github.com/dankrzeminski32/companion/commit/fe046cfe6e67e38a47dc5a1803fa76c82ebed64c))
 
 
 ## v1.1.1 (2025-02-09)
