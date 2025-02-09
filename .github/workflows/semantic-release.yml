@@ -1,4 +1,4 @@
-name: Semantic Release - Publish to pypi
+name: Continuous Delivery
 
 on:
   push:
@@ -6,48 +6,44 @@ on:
       - main
 
 jobs:
-  bump-version:
+  release:
     runs-on: ubuntu-latest
-    
+    concurrency: release
+
     permissions:
-        actions: write
-        contents: write
-  
+      id-token: write
+      contents: write
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-            fetch-depth: 0
-      
-      - name: Bump version using semantic-release
-        uses: python-semantic-release/python-semantic-release@master
-        with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-  publish:
-    needs: bump-version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v3
+      # Note: we need to checkout the repository at the workflow sha in case during the workflow
+      # the branch was updated. To keep PSR working with the configured release branches,
+      # we force a checkout of the desired release branch but at the workflow sha HEAD.
+      - name: Setup | Checkout Repository at workflow sha
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-  
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.11'
-  
-      - name: Install poetry
-        run: |
-          pip install pipx
-          pipx install poetry
-          pipx inject poetry "poetry-dynamic-versioning[plugin]"
-  
-      - name: Install dependencies
-        run: |
-          poetry install
+          ref: ${{ github.sha }}
 
-      - name: Publish package to PyPI
+      - name: Setup | Force correct release branch on workflow sha
         run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-          poetry publish --build
+          git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+
+      - name: Action | Semantic Version Release
+        id: release
+        # Adjust tag with desired version if applicable.
+        uses: python-semantic-release/python-semantic-release@v9.18.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_committer_name: "github-actions"
+          git_committer_email: "actions@users.noreply.github.com"
+
+      - name: Publish | Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@v1
+        if: steps.release.outputs.released == 'true'
+
+      - name: Publish | Upload to GitHub Release Assets
+        uses: python-semantic-release/publish-action@v9.18.1
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.release.outputs.tag }}
