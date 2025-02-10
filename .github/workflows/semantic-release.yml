@@ -41,21 +41,26 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: '3.11'
+        if: steps.release.outputs.released == 'true'
+
   
       - name: Install poetry
         run: |
           pip install pipx
           pipx install poetry
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
+        if: steps.release.outputs.released == 'true'
   
       - name: Install dependencies
         run: |
           poetry install
+        if: steps.release.outputs.released == 'true'
 
       - name: Publish package to PyPI
         run: |
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
           poetry publish --build
+        if: steps.release.outputs.released == 'true'
 
       - name: Publish | Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v9.18.1
