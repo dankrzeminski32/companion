@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v1.1.5 (2025-02-09)
+
+
 ## v1.1.4 (2025-02-09)
+
+### Bug Fixes
+
+- Next attemt sem release
+  ([`591dbf8`](https://github.com/dankrzeminski32/companion/commit/591dbf84f8ff1eae6add68d4b679d5d0e4ba6d3e))
 
 
 ## v1.1.3 (2025-02-09)
