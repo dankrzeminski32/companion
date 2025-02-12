@@ -5,7 +5,7 @@ from collections import defaultdict
 import logging
 from companion.handler import HttpRequestHandler
 from companion.parser import HttpParser
-import sys
+from pathlib import Path
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -17,7 +17,7 @@ PORT = 8181
 CHUNK_SIZE = 1024
 END_HTTP_REQUEST = "\r\n\r\n"
 
-STATIC_FILE_DIR = "/srv"
+STATIC_FILE_DIR = Path("C:/Users/dankr/OneDrive/Desktop/companion/testfolder")
 
 inputs = []
 outputs = []
@@ -40,17 +40,16 @@ def read_http_request(connection):
 
 
 def handle_read(connection):
-    logger.info("Handling read connection")
     http_request_bytes = read_http_request(connection)
     http_request = HttpParser(http_request_bytes).parse()
-    logger.info(f"Request {http_request}")
+    logger.info(f"Incoming Request {http_request}")
     http_response = request_handler.handle(http_request)
     messages[connection].put_nowait(http_response.bytes)
 
 
 def handle_write(connection: socket.socket):
-    logger.info("Handling write connection")
     message = messages[connection].get_nowait()
+    logger.info(f"Sending Response {message}")
     connection.sendall(message)
     
 
@@ -73,7 +72,6 @@ def run_forever():
     inputs.append(server_socket)
     try:
         while True:
-            logger.info(inputs)
             read_list, write_list, exception_list = select.select(inputs, outputs, exceptions)
             for conn in read_list:
                 if conn == server_socket:
