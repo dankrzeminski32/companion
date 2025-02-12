@@ -1,7 +1,29 @@
 # CHANGELOG
 
 
+## v1.2.0 (2025-02-12)
+
+
 ## v1.1.5 (2025-02-09)
+
+### Bug Fixes
+
+- Add 404 error code
+  ([`3232b15`](https://github.com/dankrzeminski32/companion/commit/3232b1564b93e07bc2f03f7dab8c683231d2ea08))
+
+- Better server logs
+  ([`a572cae`](https://github.com/dankrzeminski32/companion/commit/a572cae850caddaa36019e1cec811a3e6afe148c))
+
+- Default to http 1.0
+  ([`fa4d01c`](https://github.com/dankrzeminski32/companion/commit/fa4d01cce87a142e5976b602cdfca20c6cfd284e))
+
+- Wait for release to finish before publishing
+  ([`539f331`](https://github.com/dankrzeminski32/companion/commit/539f3314072df89ede5e1ecdbab674d5bb2582b9))
+
+### Features
+
+- Basic implementation for handling get requests
+  ([`3695dd7`](https://github.com/dankrzeminski32/companion/commit/3695dd7809270b5b6adcc849854c7469eb7e6455))
 
 
 ## v1.1.4 (2025-02-09)
