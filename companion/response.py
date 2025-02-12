@@ -4,8 +4,8 @@ from companion.enums import HttpStatus
 class HttpResponse(object):
     CRLF = "\r\n"
 
-    def __init__(self, status_code: HttpStatus, version, headers=None, body=None):
-        self.status_code_message = status_code.name
+    def __init__(self, status_code: HttpStatus, *, version = "HTTP/1.0", headers=None, body=None):
+        self.status_code_message = "Not Found"
         self.status_code = status_code.value
         self.version = version
         self.body = body
