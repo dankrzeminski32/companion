@@ -10,6 +10,10 @@ class HttpRequestLine(object):
     def __str__(self):
         return f"HttpRequestLine(method={self.method}, target={self.target}, version={self.version})"
 
+    def __repr__(self):
+        return f"HttpRequestLine(method={self.method}, target={self.target}, version={self.version})"
+
+
 
 class HttpRequest(object):
     def __init__(self, request_line: HttpRequestLine, headers=None, body=None):
@@ -19,4 +23,7 @@ class HttpRequest(object):
         self.body = body
 
     def __str__(self):
+        return f"HttpRequest(request_line={self.request_line}, headers={self.headers}, body={self.body})"
+
+    def __repr__(self):
         return f"HttpRequest(request_line={self.request_line}, headers={self.headers}, body={self.body})"
