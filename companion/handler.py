@@ -17,15 +17,15 @@ class HttpRequestHandler(object):
         clean_request_target = request_target.lstrip("/")
         target_file_or_directory = (self.file_directory / clean_request_target).resolve()
 
-        if self.file_directory in target_file_or_directory.parents:
+        if self.file_directory in target_file_or_directory.parents or target_file_or_directory == self.file_directory:
             if target_file_or_directory.exists():
                 if target_file_or_directory.is_dir():
                     if (target_file_or_directory / "index.html").exists():
-                        with (target_file_or_directory / "index.html").open() as fp:
+                        with (target_file_or_directory / "index.html").open("rb") as fp:
                             content = fp.read()
                             return HttpResponse(HttpStatus.OK, body=content)
                 else:
-                    with target_file_or_directory.open() as fp:
+                    with target_file_or_directory.open("rb") as fp:
                         content = fp.read()
                         return HttpResponse(HttpStatus.OK, body=content)
         return HttpResponse(HttpStatus.NOT_FOUND)
