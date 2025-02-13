@@ -1,8 +1,30 @@
 # CHANGELOG
 
 
+## v1.2.1 (2025-02-13)
+
+### Bug Fixes
+
+- Add repr method to request objects
+  ([`062e4cc`](https://github.com/dankrzeminski32/companion/commit/062e4cc5b9cfc4a0d5d109a2516412cf5d07088c))
+
+- Http GET logic
+  ([`1e9f342`](https://github.com/dankrzeminski32/companion/commit/1e9f342ee8a365fb7380e24fb832909987efa1e7))
+
+- Make the changelog accurate
+  ([`07ff0d7`](https://github.com/dankrzeminski32/companion/commit/07ff0d7804ac32989e6e9369d0d045a848eaa6dd))
+
+- Response enum includes http message
+  ([`819794b`](https://github.com/dankrzeminski32/companion/commit/819794bd70989526de351babe107929db6a62959))
+
+- Unit tests for the request handler
+  ([`e503c59`](https://github.com/dankrzeminski32/companion/commit/e503c5900e011549ec305ef296e0412ec44e504f))
+
+
 ## v1.2.0 (2025-02-12)
 
+
+## v1.1.5 (2025-02-09)
 
 ### Bug Fixes
 
@@ -22,8 +44,6 @@
 
 - Basic implementation for handling get requests
   ([`3695dd7`](https://github.com/dankrzeminski32/companion/commit/3695dd7809270b5b6adcc849854c7469eb7e6455))
-
-## v1.1.5 (2025-02-09)
 
 
 ## v1.1.4 (2025-02-09)
