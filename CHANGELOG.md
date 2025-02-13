@@ -4,8 +4,6 @@
 ## v1.2.0 (2025-02-12)
 
 
-## v1.1.5 (2025-02-09)
-
 ### Bug Fixes
 
 - Add 404 error code
@@ -24,6 +22,8 @@
 
 - Basic implementation for handling get requests
   ([`3695dd7`](https://github.com/dankrzeminski32/companion/commit/3695dd7809270b5b6adcc849854c7469eb7e6455))
+
+## v1.1.5 (2025-02-09)
 
 
 ## v1.1.4 (2025-02-09)
