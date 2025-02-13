@@ -1,12 +1,18 @@
 # CHANGELOG
 
 
+## v1.2.2 (2025-02-13)
+
+
 ## v1.2.1 (2025-02-13)
 
 ### Bug Fixes
 
 - Add repr method to request objects
   ([`062e4cc`](https://github.com/dankrzeminski32/companion/commit/062e4cc5b9cfc4a0d5d109a2516412cf5d07088c))
+
+- Add Server and Content-Length response headers
+  ([`73bfe93`](https://github.com/dankrzeminski32/companion/commit/73bfe930adc5fad5ebb1efb6e66db693c338b71f))
 
 - Http GET logic
   ([`1e9f342`](https://github.com/dankrzeminski32/companion/commit/1e9f342ee8a365fb7380e24fb832909987efa1e7))
