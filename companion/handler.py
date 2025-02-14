@@ -2,6 +2,7 @@ from companion.enums import HttpMethod, HttpStatus
 from companion.request import HttpRequest
 from companion.response import HttpResponse
 from pathlib import Path
+import mimetypes
 
 
 class HttpRequestHandler(object):
@@ -12,6 +13,8 @@ class HttpRequestHandler(object):
         match http_request.method:
             case HttpMethod.GET:
                 return self.get(http_request.request_line.target, http_request.headers)
+            case HttpMethod.HEAD:
+                return self.head(http_request.request_line.target, http_request.headers)
 
     def get(self, request_target: str, headers: dict):
         clean_request_target = request_target.lstrip("/")
@@ -24,14 +27,24 @@ class HttpRequestHandler(object):
                     if (target_file_or_directory / "index.html").exists():
                         with (target_file_or_directory / "index.html").open("rb") as fp:
                             content = fp.read()
-                            response_headers["Content-Length"] = len(content)
+                            response_headers.update(self._get_entity_headers(content, target_file_or_directory / "index.html"))
                             return HttpResponse(HttpStatus.OK, body=content, headers=response_headers)
                 else:
                     with target_file_or_directory.open("rb") as fp:
                         content = fp.read()
-                        response_headers["Content-Length"] = len(content)
+                        response_headers.update(self._get_entity_headers(content, target_file_or_directory))
                         return HttpResponse(HttpStatus.OK, body=content, headers=response_headers)
         return HttpResponse(HttpStatus.NOT_FOUND, headers=response_headers)
+
+    def _get_entity_headers(self, content: bytes, file_path: Path):
+        entity_headers = {"Content-Type": "application/octet-stream"}
+        entity_headers["Content-Length"] = len(content)
+        content_type, content_encoding = mimetypes.guess_file_type(file_path)
+        if content_type:
+            entity_headers["Content-Type"] = content_type
+        if content_encoding:
+            entity_headers["Content-Encoding"] = content_encoding
+        return entity_headers
 
     def head(self, request_target: str, headers: dict):
         ...
