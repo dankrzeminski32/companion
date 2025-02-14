@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v1.2.3 (2025-02-14)
+
+
 ## v1.2.2 (2025-02-13)
+
+### Bug Fixes
+
+- Interpret entity headers from file
+  ([`10bb22c`](https://github.com/dankrzeminski32/companion/commit/10bb22c32b5e0eb12502d98e477abdb2c9265b89))
 
 
 ## v1.2.1 (2025-02-13)
