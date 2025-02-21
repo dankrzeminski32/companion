@@ -6,10 +6,14 @@ import logging
 from companion.handler import HttpRequestHandler
 from companion.parser import HttpParser
 from pathlib import Path
+import argparse
 
 logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
+argparser = argparse.ArgumentParser()
+
+argparser.add_argument("staticdir", help="folder from which content will be served by the web server", type=str)
 
 
 HOST = "localhost"
@@ -24,7 +28,6 @@ outputs = []
 exceptions = []
 
 messages = defaultdict(queue.Queue)
-request_handler = HttpRequestHandler(file_directory=STATIC_FILE_DIR)
 
 
 def read_http_request(connection):
@@ -33,24 +36,31 @@ def read_http_request(connection):
     while not found_end:
         data += connection.recv(CHUNK_SIZE)
         if not data:
-            break
+            return None
         if data.decode("ascii")[-4:] == END_HTTP_REQUEST:
             found_end = True
     return data
 
 
-def handle_read(connection):
+def handle_read(connection, request_handler):
     http_request_bytes = read_http_request(connection)
-    http_request = HttpParser(http_request_bytes).parse()
-    logger.info(f"Incoming Request {http_request}")
-    http_response = request_handler.handle(http_request)
-    messages[connection].put_nowait(http_response.bytes)
+    if http_request_bytes:
+        http_request = HttpParser(http_request_bytes).parse()
+        logger.info(f"Incoming Request {http_request}")
+        http_response = request_handler.handle(http_request)
+        messages[connection].put_nowait(http_response.bytes)
+        return True
+    else:
+        connection.close()
+        return False
+
 
 
 def handle_write(connection: socket.socket):
     message = messages[connection].get_nowait()
     logger.info(f"Sending Response {message}")
     connection.sendall(message)
+    connection.close()
     
 
 def handle_exception(connection):
@@ -67,7 +77,9 @@ def initialize_server_socket() -> socket.socket:
     return sock
 
 
-def run_forever():
+def run_forever(staticdir: Path):
+    logger.info(f"Setting static content directory {staticdir.resolve()}")
+    request_handler = HttpRequestHandler(file_directory=staticdir)
     server_socket = initialize_server_socket()
     inputs.append(server_socket)
     try:
@@ -79,9 +91,10 @@ def run_forever():
                     new_connection.setblocking(0)
                     inputs.append(new_connection)
                     break
-                handle_read(conn)
+                is_ready_for_send = handle_read(conn, request_handler)
                 inputs.remove(conn)
-                outputs.append(conn)
+                if is_ready_for_send:
+                    outputs.append(conn)
             for conn in write_list:
                 handle_write(conn)
                 outputs.remove(conn)
@@ -94,4 +107,6 @@ def run_forever():
 
 
 def cli():
-    run_forever()
+    args = argparser.parse_args()
+    static_content_dir = Path(args.staticdir).resolve()
+    run_forever(static_content_dir)
