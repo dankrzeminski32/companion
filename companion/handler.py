@@ -9,6 +9,7 @@ logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+
 class HttpRequestHandler(object):
     def __init__(self, file_directory: Path):
         self.file_directory = file_directory
@@ -21,6 +22,18 @@ class HttpRequestHandler(object):
                 return self.head(http_request.request_line.target, http_request.headers)
 
     def get(self, request_target: str, headers: dict):
+        content, headers = self._get_file_content_and_headers(request_target, headers)
+        if content and headers:
+            return HttpResponse(HttpStatus.OK, headers=headers, body=content)
+        return HttpResponse(HttpStatus.NOT_FOUND, headers=headers)
+        
+    def head(self, request_target: str, headers: dict):
+        _, headers = self._get_file_content_and_headers(request_target, headers)
+        if headers:
+            return HttpResponse(HttpStatus.OK, headers=headers)
+        return HttpResponse(HttpStatus.NOT_FOUND, headers=headers)
+
+    def _get_file_content_and_headers(self, request_target: str, headers: dict):
         clean_request_target = request_target.lstrip("/")
         target_file_or_directory = (self.file_directory / clean_request_target).resolve()
         logger.info(f"Attempting to serve file {target_file_or_directory}")
@@ -33,14 +46,14 @@ class HttpRequestHandler(object):
                         with (target_file_or_directory / "index.html").open("rb") as fp:
                             content = fp.read()
                             response_headers.update(self._get_entity_headers(content, target_file_or_directory / "index.html"))
-                            return HttpResponse(HttpStatus.OK, body=content, headers=response_headers)
+                            return content, response_headers
                 else:
                     with target_file_or_directory.open("rb") as fp:
                         content = fp.read()
                         response_headers.update(self._get_entity_headers(content, target_file_or_directory))
-                        return HttpResponse(HttpStatus.OK, body=content, headers=response_headers)
-        return HttpResponse(HttpStatus.NOT_FOUND, headers=response_headers)
-
+                        return content, response_headers
+        return None, {}
+                
     def _get_entity_headers(self, content: bytes, file_path: Path):
         entity_headers = {"Content-Type": "application/octet-stream"}
         entity_headers["Content-Length"] = len(content)
@@ -50,6 +63,3 @@ class HttpRequestHandler(object):
         if content_encoding:
             entity_headers["Content-Encoding"] = content_encoding
         return entity_headers
-
-    def head(self, request_target: str, headers: dict):
-        ...
