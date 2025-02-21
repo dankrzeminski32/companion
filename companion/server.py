@@ -14,10 +14,11 @@ logger.setLevel(logging.DEBUG)
 argparser = argparse.ArgumentParser()
 
 argparser.add_argument("staticdir", help="folder from which content will be served by the web server", type=str)
+argparser.add_argument("--port", help="port for the web server socket to listen on", type=int)
 
 
 HOST = "localhost"
-PORT = 8181
+DEFAULT_PORT = 8180
 CHUNK_SIZE = 1024
 END_HTTP_REQUEST = "\r\n\r\n"
 
@@ -102,4 +103,6 @@ class HttpServer:
 def cli():
     args = argparser.parse_args()
     static_content_dir = Path(args.staticdir).resolve()
-    HttpServer(static_content_dir, PORT, HOST).run()
+    port = args.port if args.port else DEFAULT_PORT
+    logger.info(f"Attempting to listen on port {port}")
+    HttpServer(static_content_dir, port, HOST).run()
