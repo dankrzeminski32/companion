@@ -14,6 +14,8 @@ pip install companion-server
 
 Now, we can run the server... The only required argument is a path to your content directory, this is how the server knows where to look for content (e.g. HTML, PNG, etc)
 
+You can optionally specify a port otherwise it will default to 8180
+
 ```bash
 companion-server /home/dan/webserver/content/
 ```
