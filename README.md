@@ -17,9 +17,8 @@ Now, we can run the server... The only required argument is a path to your conte
 You can optionally specify a port otherwise it will default to 8180
 
 ```bash
-companion-server /home/dan/webserver/content/
+companion-server /home/dan/webserver/content/ --port 1000
 ```
-
 
 ## Goals
 
