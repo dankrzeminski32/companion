@@ -22,6 +22,9 @@ companion-server /home/dan/webserver/content/
 ## Goals
 
 [x] Implement a subset of the http 1.0 protocol (rfc 1945)
+
 [x] Handle GET and HEAD requests from a client
+
 [x] Manage multiple connections (threading, multiprocessing, etc)
+
 [x] Use only the python standard lib 
