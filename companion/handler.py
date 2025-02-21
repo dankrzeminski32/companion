@@ -3,7 +3,11 @@ from companion.request import HttpRequest
 from companion.response import HttpResponse
 from pathlib import Path
 import mimetypes
+import logging
 
+logging.basicConfig()
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 class HttpRequestHandler(object):
     def __init__(self, file_directory: Path):
@@ -19,6 +23,7 @@ class HttpRequestHandler(object):
     def get(self, request_target: str, headers: dict):
         clean_request_target = request_target.lstrip("/")
         target_file_or_directory = (self.file_directory / clean_request_target).resolve()
+        logger.info(f"Attempting to serve file {target_file_or_directory}")
         response_headers = {"Server": "companion"}
 
         if self.file_directory in target_file_or_directory.parents or target_file_or_directory == self.file_directory:
