@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.2.4 (2025-02-21)
+
+### Bug Fixes
+
+- Bump version num
+  ([`6424d7e`](https://github.com/dankrzeminski32/companion/commit/6424d7ec52122a1cf46675a087a6aa5859221bac))
+
+
 ## v1.2.3 (2025-02-14)
 
 
