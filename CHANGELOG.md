@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.3.0 (2025-02-27)
+
+### Features
+
+- Handle partial read and writes
+  ([`9cd587d`](https://github.com/dankrzeminski32/companion/commit/9cd587d8e412037c6345cfb818e087107e8ae10f))
+
+
 ## v1.2.4 (2025-02-21)
 
 ### Bug Fixes
