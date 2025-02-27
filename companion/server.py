@@ -27,7 +27,8 @@ class HttpServer:
     inputs = []
     outputs = []
     exceptions = []
-    messages = defaultdict(queue.Queue)
+    out_messages = defaultdict(queue.Queue)
+    in_messages = defaultdict(bytes)
 
     def __init__(self, staticdir: Path, port: int, host: str):
         logger.info(f"Setting static content directory {staticdir}")
@@ -53,9 +54,12 @@ class HttpServer:
                         self.inputs.append(new_connection)
                         break
                     is_ready_for_send = self.handle_read(conn)
-                    self.inputs.remove(conn)
                     if is_ready_for_send:
+                        self.inputs.remove(conn)
                         self.outputs.append(conn)
+                    else:
+                        if conn not in self.inputs:
+                            self.inputs.remove(conn)
                 for conn in write_list:
                     self.handle_write(conn)
                     self.outputs.remove(conn)
@@ -67,37 +71,45 @@ class HttpServer:
             self.server_sock.close()
 
     def handle_read(self, connection):
-        http_request_bytes = self.read_http_request(connection)
+        logger.info(f"Handling read connection {connection}.")
+        try:
+            http_request_bytes = self.read_http_request(connection)
+        except OSError:
+            return False
         if http_request_bytes:
             http_request = HttpParser(http_request_bytes).parse()
             logger.info(f"Incoming Request {http_request}")
             http_response = self.request_handler.handle(http_request)
-            self.messages[connection].put_nowait(http_response.bytes)
+            self.out_messages[connection].put_nowait(http_response.bytes)
             return True
         else:
             connection.close()
+            self.inputs.remove(connection)
+            self.outputs.remove(connection)
             return False
 
     def handle_write(self, connection: socket.socket):
-        message = self.messages[connection].get_nowait()
+        logger.info(f"Handling write connection {connection}.")
+        message = self.out_messages[connection].get_nowait()
         logger.info(f"Sending Response {message}")
         connection.sendall(message)
         connection.close()
 
     def handle_exception(self, connection):
-        logger.info("Handling exception connection")
-        ...
+        logger.info(f"Handling exception connection {connection}, closing socket.")
+        connection.close()
         
     def read_http_request(self, connection):
-        found_end = False
         data = b""
-        while not found_end:
-            data += connection.recv(CHUNK_SIZE)
+        while True:
+            data = connection.recv(CHUNK_SIZE)
             if not data:
-                return None
+                return False 
+            self.in_messages[connection] += data
             if data.decode("ascii")[-4:] == END_HTTP_REQUEST:
-                found_end = True
-        return data
+                http_bytes = self.in_messages[connection]
+                del self.in_messages[connection]
+                return http_bytes
 
 
 def cli():
