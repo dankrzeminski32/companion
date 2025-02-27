@@ -13,8 +13,14 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 argparser = argparse.ArgumentParser()
 
-argparser.add_argument("staticdir", help="folder from which content will be served by the web server", type=str)
-argparser.add_argument("--port", help="port for the web server socket to listen on", type=int)
+argparser.add_argument(
+    "staticdir",
+    help="folder from which content will be served by the web server",
+    type=str,
+)
+argparser.add_argument(
+    "--port", help="port for the web server socket to listen on", type=int
+)
 
 
 HOST = "localhost"
@@ -41,12 +47,14 @@ class HttpServer:
         self.server_sock.setblocking(0)
         self.server_sock.bind((host, port))
         self.server_sock.listen(5)
-    
+
     def run(self):
         self.inputs.append(self.server_sock)
         try:
             while True:
-                read_list, write_list, exception_list = select.select(self.inputs, self.outputs, self.exceptions)
+                read_list, write_list, exception_list = select.select(
+                    self.inputs, self.outputs, self.exceptions
+                )
                 for conn in read_list:
                     if conn == self.server_sock:
                         new_connection, address = conn.accept()
@@ -98,13 +106,13 @@ class HttpServer:
     def handle_exception(self, connection):
         logger.info(f"Handling exception connection {connection}, closing socket.")
         connection.close()
-        
+
     def read_http_request(self, connection):
         data = b""
         while True:
             data = connection.recv(CHUNK_SIZE)
             if not data:
-                return False 
+                return False
             self.in_messages[connection] += data
             if data.decode("ascii")[-4:] == END_HTTP_REQUEST:
                 http_bytes = self.in_messages[connection]

@@ -26,7 +26,7 @@ class HttpRequestHandler(object):
         if content and headers:
             return HttpResponse(HttpStatus.OK, headers=headers, body=content)
         return HttpResponse(HttpStatus.NOT_FOUND, headers=headers)
-        
+
     def head(self, request_target: str, headers: dict):
         _, headers = self._get_file_content_and_headers(request_target, headers)
         if headers:
@@ -35,25 +35,36 @@ class HttpRequestHandler(object):
 
     def _get_file_content_and_headers(self, request_target: str, headers: dict):
         clean_request_target = request_target.lstrip("/")
-        target_file_or_directory = (self.file_directory / clean_request_target).resolve()
+        target_file_or_directory = (
+            self.file_directory / clean_request_target
+        ).resolve()
         logger.info(f"Attempting to serve file {target_file_or_directory}")
         response_headers = {"Server": "companion"}
 
-        if self.file_directory in target_file_or_directory.parents or target_file_or_directory == self.file_directory:
+        if (
+            self.file_directory in target_file_or_directory.parents
+            or target_file_or_directory == self.file_directory
+        ):
             if target_file_or_directory.exists():
                 if target_file_or_directory.is_dir():
                     if (target_file_or_directory / "index.html").exists():
                         with (target_file_or_directory / "index.html").open("rb") as fp:
                             content = fp.read()
-                            response_headers.update(self._get_entity_headers(content, target_file_or_directory / "index.html"))
+                            response_headers.update(
+                                self._get_entity_headers(
+                                    content, target_file_or_directory / "index.html"
+                                )
+                            )
                             return content, response_headers
                 else:
                     with target_file_or_directory.open("rb") as fp:
                         content = fp.read()
-                        response_headers.update(self._get_entity_headers(content, target_file_or_directory))
+                        response_headers.update(
+                            self._get_entity_headers(content, target_file_or_directory)
+                        )
                         return content, response_headers
         return None, {}
-                
+
     def _get_entity_headers(self, content: bytes, file_path: Path):
         entity_headers = {"Content-Type": "application/octet-stream"}
         entity_headers["Content-Length"] = len(content)

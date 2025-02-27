@@ -4,7 +4,9 @@ from companion.enums import HttpStatus
 class HttpResponse(object):
     CRLF = "\r\n"
 
-    def __init__(self, status_code: HttpStatus, *, version = "HTTP/1.0", headers=None, body=None):
+    def __init__(
+        self, status_code: HttpStatus, *, version="HTTP/1.0", headers=None, body=None
+    ):
         self.status_code_message = status_code.message
         self.status_code = status_code.value
         self.version = version
@@ -22,13 +24,12 @@ class HttpResponse(object):
         response += self.CRLF
         return bytes(response, encoding="ascii") + self._build_response_body()
 
-    
     def _build_response_line(self) -> str:
         return " ".join([self.version, str(self.status_code), self.status_code_message])
 
     def _build_headers(self) -> str:
         return self.CRLF.join([f"{k}: {v}" for k, v in self.headers.items()])
-    
+
     def _build_response_body(self) -> str:
         return self.body if self.body else b""
 

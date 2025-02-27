@@ -2,7 +2,10 @@ from companion.parser import HttpParser
 from companion.enums import HttpMethod
 from companion.request import HttpRequest, HttpRequestLine
 
-GET_REQ_WITH_HEADERS = b"GET /mysite/index.html HTTP/1.1\r\nHost: 10.101.101.10\r\nAccept: */*\r\n\r\n"
+GET_REQ_WITH_HEADERS = (
+    b"GET /mysite/index.html HTTP/1.1\r\nHost: 10.101.101.10\r\nAccept: */*\r\n\r\n"
+)
+
 
 def test_parse_get_request():
     parser = HttpParser(GET_REQ_WITH_HEADERS)
@@ -14,4 +17,3 @@ def test_parse_get_request():
     assert result.request_line.version == "HTTP/1.1"
     assert result.headers == {"Host": "10.101.101.10", "Accept": "*/*"}
     assert result.body is None
-

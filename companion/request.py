@@ -14,7 +14,6 @@ class HttpRequestLine(object):
         return f"HttpRequestLine(method={self.method}, target={self.target}, version={self.version})"
 
 
-
 class HttpRequest(object):
     def __init__(self, request_line: HttpRequestLine, headers=None, body=None):
         self.request_line = request_line
