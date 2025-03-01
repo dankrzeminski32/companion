@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v1.3.2 (2025-03-01)
+
+
 ## v1.3.1 (2025-02-27)
+
+### Bug Fixes
+
+- Document modules
+  ([`1876327`](https://github.com/dankrzeminski32/companion/commit/1876327c96692be5ae2fb32b198663d93ac7a7be))
 
 
 ## v1.3.0 (2025-02-27)
