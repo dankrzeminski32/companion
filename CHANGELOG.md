@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v1.3.1 (2025-02-27)
+
+
 ## v1.3.0 (2025-02-27)
+
+### Bug Fixes
+
+- Format with black
+  ([`a60b40f`](https://github.com/dankrzeminski32/companion/commit/a60b40f576fdd871af790ba55ce1da6095523c38))
 
 ### Features
 
