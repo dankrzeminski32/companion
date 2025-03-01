@@ -68,6 +68,7 @@ class HttpServer:
         self.server_sock.listen(5)
 
     def run(self) -> None:
+        """Runs the server's event loop, serving all connections"""
         self.inputs.append(self.server_sock)
         try:
             while True:
