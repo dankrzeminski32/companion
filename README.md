@@ -20,6 +20,20 @@ You can optionally specify a port otherwise it will default to 8180
 companion-server /home/dan/webserver/content/ --port 1000
 ```
 
+## Development
+
+First install the dev dependancies,
+
+```bash
+poetry install --with dev
+```
+
+Then you can run the test suite,
+
+```bash
+poetry run pytest .
+```
+
 ## Goals
 
 [x] Implement a subset of the http 1.0 protocol (rfc 1945)

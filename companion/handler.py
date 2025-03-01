@@ -1,3 +1,5 @@
+"""Support handling of a generic HTTP request"""
+
 from companion.enums import HttpMethod, HttpStatus
 from companion.request import HttpRequest
 from companion.response import HttpResponse
@@ -11,23 +13,55 @@ logger.setLevel(logging.DEBUG)
 
 
 class HttpRequestHandler(object):
+    """Handles generic HTTP requests
+
+    Args:
+        file_directory (Path): path to static content (e.g. HTML, PNG)
+    """
+
     def __init__(self, file_directory: Path):
         self.file_directory = file_directory
 
-    def handle(self, http_request: HttpRequest):
+    def handle(self, http_request: HttpRequest) -> HttpResponse:
+        """Handles a generic HttpRequest
+
+        Args:
+            http_request (HttpRequest): the HTTP request in context
+
+        Returns:
+            HttpResponse: a valid HTTP response
+        """
         match http_request.method:
             case HttpMethod.GET:
                 return self.get(http_request.request_line.target, http_request.headers)
             case HttpMethod.HEAD:
                 return self.head(http_request.request_line.target, http_request.headers)
 
-    def get(self, request_target: str, headers: dict):
+    def get(self, request_target: str, headers: dict) -> HttpResponse:
+        """implements the GET method of the HTTP protocol
+
+        Args:
+            request_target (str): target file or directory to retrieve
+            headers (dict): request headers
+
+        Returns:
+            HttpResponse: a valid HTTP response
+        """
         content, headers = self._get_file_content_and_headers(request_target, headers)
         if content and headers:
             return HttpResponse(HttpStatus.OK, headers=headers, body=content)
         return HttpResponse(HttpStatus.NOT_FOUND, headers=headers)
 
     def head(self, request_target: str, headers: dict):
+        """implements the HEAD method of the HTTP protocol
+
+        Args:
+            request_target (str): target file or directory to retrieve
+            headers (dict): request headers
+
+        Returns:
+            HttpResponse: a valid HTTP response
+        """
         _, headers = self._get_file_content_and_headers(request_target, headers)
         if headers:
             return HttpResponse(HttpStatus.OK, headers=headers)
@@ -63,7 +97,7 @@ class HttpRequestHandler(object):
                             self._get_entity_headers(content, target_file_or_directory)
                         )
                         return content, response_headers
-        return None, {}
+        return None, response_headers
 
     def _get_entity_headers(self, content: bytes, file_path: Path):
         entity_headers = {"Content-Type": "application/octet-stream"}

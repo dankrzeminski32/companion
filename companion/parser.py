@@ -1,9 +1,18 @@
+"""Supports the parsing of bytes into an HttpRequest object"""
+
 from companion.request import HttpRequest, HttpRequestLine
 from companion.enums import HttpMethod
 
 
 class HttpParser(object):
-    """A simple HTTP Parser that turns bytes into HttpRequests"""
+    """A simple HTTP Parser that turns bytes into HttpRequests
+
+    Args:
+        data (bytes): bytes to parse into an HTTP request
+
+    Returns:
+        HttpRequest: a valid HTTP request
+    """
 
     CRLF = "\r\n"
 
@@ -11,6 +20,11 @@ class HttpParser(object):
         self.raw_data = data
 
     def parse(self) -> HttpRequest:
+        """converts bytes into an http request
+
+        Returns:
+            HttpRequest: a valid HTTP request
+        """
         decoded_string = self.raw_data.decode("ascii")
         lines = decoded_string.split(self.CRLF)
         request_line: HttpRequestLine = self._parse_request_line(lines[0])

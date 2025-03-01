@@ -1,7 +1,18 @@
+"""Representation of an HTTP response"""
+
 from companion.enums import HttpStatus
 
 
 class HttpResponse(object):
+    """Http Response object
+
+    Args:
+        status_code (HttpStatus): status code of the HTTP response
+        version (str, optional): HTTP version number. Defaults to "HTTP/1.0".
+        headers (_type_, optional): HTTP headers. Defaults to None.
+        body (_type_, optional): HTTP entity body. Defaults to None.
+    """
+
     CRLF = "\r\n"
 
     def __init__(
@@ -15,6 +26,11 @@ class HttpResponse(object):
 
     @property
     def bytes(self) -> bytes:
+        """Converts response into bytes
+
+        Returns:
+            bytes: bytes of the HTTP response
+        """
         response = ""
         response += self._build_response_line()
         response += self.CRLF
