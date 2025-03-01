@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v1.3.3 (2025-03-01)
+
+
 ## v1.3.2 (2025-03-01)
+
+### Bug Fixes
+
+- Add docs for the run method
+  ([`3a76021`](https://github.com/dankrzeminski32/companion/commit/3a7602133719ec8b0e6d544c52faee7e0b6abbc6))
 
 
 ## v1.3.1 (2025-02-27)
